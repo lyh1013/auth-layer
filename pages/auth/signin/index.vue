@@ -7,6 +7,8 @@ definePageMeta({
   layout: 'full'
 })
 
+const router = useRouter()
+
 const isPwdVisible = ref(false)
 
 const { handleSubmit } = useForm({
@@ -21,15 +23,17 @@ function togglePwdVisibility() {
   isPwdVisible.value = !isPwdVisible.value
 }
 
-const onSubmit = handleSubmit(values => {
-  console.log('data', values)
+const onSubmit = handleSubmit((values: { account: string; password: string }) => {
+  localStorage.setItem('user', JSON.stringify(values))
+
+  router.push('/')
 })
 </script>
 
 <template>
   <q-page padding class="flex items-center justify-center">
     <q-form @submit="onSubmit">
-      <q-card class="card-shadow q-px-sm q-py-md" style="width: 420px">
+      <q-card class="card-shadow q-px-sm q-py-md" style="max-width: 420px">
         <q-card-section class="text-center">
           <q-img src="@images/logo/logo-h.png" class="q-my-md" style="max-width: 300px" />
           <div class="text-h5">管理員登入</div>
@@ -65,7 +69,7 @@ const onSubmit = handleSubmit(values => {
           </div>
         </q-card-section>
 
-        <q-card-actions>
+        <q-card-actions class="q-px-md">
           <q-btn type="submit" color="primary" label="登入" class="w-100" size="lg" />
         </q-card-actions>
       </q-card>
